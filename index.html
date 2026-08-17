@@ -220,13 +220,15 @@
       #0B0F17;
     border-right:1px solid var(--border);
     display:flex; align-items:center; justify-content:center;
-    min-height:190px; position:relative;
+    min-height:190px; position:relative; overflow:hidden;
   }
   @media (max-width:760px){ .card-shot{border-right:none; border-bottom:1px solid var(--border);} }
-  .card-shot img{width:100%; height:100%; object-fit:cover; display:block;}
+  .card-shot img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
   .shot-placeholder{
+    position:absolute; inset:0; display:none;
     text-align:center; padding:18px; font-family:var(--mono); font-size:10.5px;
     color:var(--text-dim2); text-transform:uppercase; letter-spacing:.05em; line-height:1.7;
+    flex-direction:column; align-items:center; justify-content:center;
   }
 
   .card-body{padding:26px 28px;}
@@ -374,7 +376,7 @@
         <div class="card-shot">
           <img src="capturas/estibas.png" alt="Captura de Gestión de Estibas"
                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+          <div class="shot-placeholder">
             Captura pendiente<br>capturas/estibas.png
           </div>
         </div>
@@ -406,7 +408,7 @@
         <div class="card-shot">
           <img src="capturas/erp-inventario.png" alt="Captura de Planificación de Insumos - Inventario"
                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+          <div class="shot-placeholder">
             Captura pendiente<br>capturas/erp-inventario.png
           </div>
         </div>
@@ -437,7 +439,7 @@
         <div class="card-shot">
           <img src="capturas/erp-compras.png" alt="Captura de Planificación de Insumos - Compras"
                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+          <div class="shot-placeholder">
             Captura pendiente<br>capturas/erp-compras.png
           </div>
         </div>
@@ -468,7 +470,7 @@
         <div class="card-shot">
           <img src="capturas/formularios.png" alt="Captura de ERP Formularios de Línea"
                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+          <div class="shot-placeholder">
             Captura pendiente<br>capturas/formularios.png
           </div>
         </div>
