@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucas Sosa Torres — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:        #090C11;
+    --bg-2:      #0D1119;
+    --panel:     rgba(255,255,255,0.035);
+    --panel-hi:  rgba(255,255,255,0.06);
+    --border:    rgba(255,255,255,0.09);
+    --border-hi: rgba(255,255,255,0.18);
+    --text:      #EAEDF3;
+    --text-dim:  #8B94A6;
+    --text-dim2: #5C6478;
+
+    --violet:    #8B5CF6;
+    --cyan:      #33D6E8;
+    --grad:      linear-gradient(120deg, #8B5CF6 0%, #33D6E8 100%);
+    --ok:        #34E29A;
+
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--cyan); outline-offset:3px; border-radius:2px;}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- BACKGROUND FIELD ---------- */
+  .bg-field{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  .bg-field::before, .bg-field::after{
+    content:""; position:absolute; border-radius:50%;
+    filter:blur(90px); opacity:0.28;
+  }
+  .bg-field::before{
+    width:640px; height:640px; top:-220px; left:-160px;
+    background:radial-gradient(circle, var(--violet), transparent 70%);
+    animation:drift1 22s ease-in-out infinite alternate;
+  }
+  .bg-field::after{
+    width:560px; height:560px; top:220px; right:-200px;
+    background:radial-gradient(circle, var(--cyan), transparent 70%);
+    animation:drift2 26s ease-in-out infinite alternate;
+  }
+  @keyframes drift1{ from{transform:translate(0,0);} to{transform:translate(60px,80px);} }
+  @keyframes drift2{ from{transform:translate(0,0);} to{transform:translate(-50px,-60px);} }
+  .grid-overlay{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  main, header.nav, footer{position:relative; z-index:1;}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(9,12,17,0.72);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px;
+    max-width:1100px; margin:0 auto;
+  }
+  .nav-mark{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.04em;
+    color:var(--text); font-weight:500; text-decoration:none;
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-mark .pulse{
+    width:7px; height:7px; border-radius:50%; background:var(--ok);
+    box-shadow:0 0 0 0 rgba(52,226,154,0.6);
+    animation:pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(52,226,154,0.55); }
+    70%{ box-shadow:0 0 0 8px rgba(52,226,154,0); }
+    100%{ box-shadow:0 0 0 0 rgba(52,226,154,0); }
+  }
+  .nav-links{display:flex; gap:30px; list-style:none; margin:0; padding:0;}
+  .nav-links a{
+    font-size:14px; text-decoration:none; color:var(--text-dim);
+    font-weight:500; transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--text);}
+  @media (max-width:640px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:96px 0 60px;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:var(--mono); font-size:12px; letter-spacing:0.05em;
+    color:var(--text-dim); border:1px solid var(--border);
+    padding:6px 14px; border-radius:999px; margin-bottom:28px;
+    background:var(--panel);
+  }
+  .eyebrow b{color:var(--ok); font-weight:600;}
+
+  h1.title{
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(2.6rem, 6.4vw, 4.4rem);
+    line-height:1.04; margin:0 0 22px; letter-spacing:-0.015em;
+  }
+  h1.title .grad{
+    background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+  }
+  .hero .pitch{
+    max-width:640px; color:var(--text-dim); font-size:1.08rem; margin:0 0 34px;
+  }
+
+  .cta-row{display:flex; gap:14px; margin-bottom:52px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--body); font-weight:600; font-size:14.5px;
+    padding:13px 24px; border-radius:9px; text-decoration:none;
+    transition:all .18s ease; border:1px solid transparent;
+  }
+  .btn.primary{
+    background:var(--grad); color:#0B0E14;
+  }
+  .btn.primary:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .btn.ghost{
+    background:var(--panel); color:var(--text); border-color:var(--border);
+  }
+  .btn.ghost:hover{ border-color:var(--border-hi); background:var(--panel-hi); }
+
+  /* ---------- STATUS PANEL (signature element) ---------- */
+  .status-panel{
+    border:1px solid var(--border); border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    backdrop-filter:blur(10px);
+    padding:0; overflow:hidden;
+  }
+  .status-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 22px; border-bottom:1px solid var(--border);
+    font-family:var(--mono); font-size:12px; color:var(--text-dim);
+  }
+  .status-head .dots{display:flex; gap:6px;}
+  .status-head .dots span{width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,0.14);}
+  .status-list{display:grid; grid-template-columns:repeat(4,1fr);}
+  @media (max-width:820px){ .status-list{grid-template-columns:repeat(2,1fr);} }
+  .status-item{
+    padding:20px 22px; border-right:1px solid var(--border); border-bottom:1px solid var(--border);
+  }
+  .status-item:nth-child(4n){border-right:none;}
+  @media (max-width:820px){ .status-item:nth-child(2n){border-right:none;} .status-item:nth-child(4n){border-right:1px solid var(--border);} }
+  .status-item .top{
+    display:flex; align-items:center; gap:8px; margin-bottom:10px;
+    font-family:var(--mono); font-size:11px; color:var(--ok);
+  }
+  .status-item .top .d{
+    width:6px; height:6px; border-radius:50%; background:var(--ok);
+    box-shadow:0 0 8px 1px rgba(52,226,154,0.7);
+  }
+  .status-item h4{margin:0 0 4px; font-family:var(--display); font-size:1rem; font-weight:600;}
+  .status-item p{margin:0; font-size:12.5px; color:var(--text-dim2);}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:80px 0;}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:14px;}
+  .sec-num{font-family:var(--mono); font-size:12.5px; color:var(--cyan);}
+  .sec-head h2{font-family:var(--display); font-weight:600; font-size:1.9rem; margin:0;}
+  .sec-lede{color:var(--text-dim); max-width:600px; margin:0 0 44px; font-size:.98rem;}
+
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- PROJECT CARDS ---------- */
+  .projects{display:grid; grid-template-columns:1fr; gap:20px;}
+  .card{
+    position:relative; border-radius:16px; padding:1px;
+    background:linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+    transition:transform .25s ease;
+  }
+  .card:hover{transform:translateY(-3px);}
+  .card-inner{
+    border-radius:15px; background:var(--bg-2);
+    display:grid; grid-template-columns:240px 1fr; overflow:hidden;
+  }
+  @media (max-width:760px){ .card-inner{grid-template-columns:1fr;} }
+
+  .card-shot{
+    background:
+      radial-gradient(circle at 30% 20%, rgba(139,92,246,0.16), transparent 60%),
+      radial-gradient(circle at 80% 80%, rgba(51,214,232,0.14), transparent 60%),
+      #0B0F17;
+    border-right:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    min-height:190px; position:relative;
+  }
+  @media (max-width:760px){ .card-shot{border-right:none; border-bottom:1px solid var(--border);} }
+  .card-shot img{width:100%; height:100%; object-fit:cover; display:block;}
+  .shot-placeholder{
+    text-align:center; padding:18px; font-family:var(--mono); font-size:10.5px;
+    color:var(--text-dim2); text-transform:uppercase; letter-spacing:.05em; line-height:1.7;
+  }
+
+  .card-body{padding:26px 28px;}
+  .card-tag{
+    display:flex; align-items:center; gap:8px; margin-bottom:12px;
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ok);
+  }
+  .card-tag .d{width:7px; height:7px; border-radius:50%; background:var(--ok); box-shadow:0 0 8px 1px rgba(52,226,154,0.65);}
+  .card-body h3{font-family:var(--display); font-weight:600; font-size:1.36rem; margin:0 0 4px; color:var(--text);}
+  .card-sub{font-size:13px; color:var(--cyan); font-weight:600; margin:0 0 14px;}
+  .card-body p.desc{margin:0 0 18px; color:var(--text-dim); font-size:.95rem;}
+  .stack{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;}
+  .chip{
+    font-family:var(--mono); font-size:11px; padding:4px 11px; border-radius:999px;
+    color:var(--text-dim); background:var(--panel); border:1px solid var(--border);
+  }
+  .card-link{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:13.5px; font-weight:600; text-decoration:none; color:var(--text);
+    padding:9px 16px; border-radius:8px; border:1px solid var(--border);
+    transition:all .18s ease;
+  }
+  .card-link:hover{border-color:var(--cyan); color:var(--cyan); background:rgba(51,214,232,0.06);}
+
+  /* ---------- SKILLS ---------- */
+  .skill-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+  .skill-group{
+    border:1px solid var(--border); border-radius:14px; padding:22px; background:var(--panel);
+  }
+  .skill-group h4{
+    font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--cyan); margin:0 0 16px;
+  }
+  .skill-group ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  .skill-group li{font-size:.92rem; color:var(--text-dim);}
+  .skill-group li b{color:var(--text); font-weight:600;}
+
+  /* ---------- ABOUT ---------- */
+  .about-wrap{display:grid; grid-template-columns:1fr 280px; gap:50px;}
+  @media (max-width:820px){ .about-wrap{grid-template-columns:1fr;} }
+  .about-text{font-size:1.02rem; color:var(--text-dim);}
+  .about-text p{margin:0 0 18px;}
+  .about-text strong{color:var(--text); font-weight:600;}
+  .about-side{
+    border:1px solid var(--border); border-radius:14px; padding:22px;
+    background:var(--panel); align-self:start; font-family:var(--mono); font-size:12.5px;
+  }
+  .about-side .row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--border); color:var(--text-dim);}
+  .about-side .row:last-child{border-bottom:none;}
+  .about-side .row b{color:var(--text); font-weight:500;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border); padding:60px 0 40px; margin-top:20px;}
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:34px;}
+  footer h3{font-family:var(--display); font-weight:600; font-size:1.8rem; margin:0 0 12px;}
+  footer h3 .grad{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  footer p{color:var(--text-dim); max-width:400px; font-size:.94rem; margin:0 0 8px;}
+  .foot-links{display:flex; flex-direction:column; gap:10px; font-family:var(--mono); font-size:13px;}
+  .foot-links a{text-decoration:none; color:var(--text-dim); transition:color .15s ease;}
+  .foot-links a:hover{color:var(--cyan);}
+  .foot-bottom{
+    margin-top:50px; padding-top:20px; border-top:1px solid var(--border);
+    font-family:var(--mono); font-size:11px; color:var(--text-dim2); text-transform:uppercase; letter-spacing:.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-field"></div>
+<div class="grid-overlay"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-mark" href="#top"><span class="pulse"></span>lucas.sosa — portfolio</a>
+    <ul class="nav-links">
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<div id="top" class="wrap hero">
+  <div class="eyebrow"><b>●</b>&nbsp; 4 sistemas en producción ahora mismo</div>
+
+  <h1 class="title">Lucas Joaquín<br>Sosa Torres — <span class="grad">construyo sistemas<br>que reemplazan el papel.</span></h1>
+
+  <p class="pitch">
+    Analista de Sistemas y desarrollador full-stack. Diseño, programo y despliego
+    plataformas de gestión para operaciones reales de producción, con IA integrada
+    al flujo de trabajo diario y criterio propio en cada línea que llega a producción.
+  </p>
+
+  <div class="cta-row">
+    <a class="btn primary" href="#proyectos">Ver proyectos →</a>
+    <a class="btn ghost" href="mailto:torressosa56@gmail.com">Escribirme</a>
+    <a class="btn ghost" href="https://github.com/lucs56" target="_blank" rel="noopener">GitHub</a>
+  </div>
+
+  <div class="status-panel reveal">
+    <div class="status-head">
+      <span>system-status.log</span>
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="status-list">
+      <div class="status-item">
+        <div class="top"><span class="d"></span> operativo</div>
+        <h4>Estibas</h4>
+        <p>Tracking &amp; vencimientos</p>
+      </div>
+      <div class="status-item">
+        <div class="top"><span class="d"></span> operativo</div>
+        <h4>ERP · Inventario</h4>
+        <p>Stock por semáforo</p>
+      </div>
+      <div class="status-item">
+        <div class="top"><span class="d"></span> operativo</div>
+        <h4>ERP · Compras</h4>
+        <p>Planificación insumos</p>
+      </div>
+      <div class="status-item">
+        <div class="top"><span class="d"></span> operativo</div>
+        <h4>Formularios</h4>
+        <p>Registros digitales</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+<section id="proyectos">
+  <div class="sec-head reveal"><span class="sec-num">01</span><h2>Proyectos en producción</h2></div>
+  <p class="sec-lede reveal">
+    Todos nacieron del mismo problema: procesos de bodega sostenidos en planillas sueltas,
+    WhatsApp y memoria. Los cuatro están desplegados y en uso real.
+  </p>
+
+  <div class="projects">
+
+    <article class="card reveal">
+      <div class="card-inner">
+        <div class="card-shot">
+          <img src="capturas/estibas.png" alt="Captura de Gestión de Estibas"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+            Captura pendiente<br>capturas/estibas.png
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag"><span class="d"></span> En producción</div>
+          <h3>Gestión de Estibas</h3>
+          <p class="card-sub">Control de estibas, vencimientos y solicitudes VE</p>
+          <p class="desc">
+            Aplicación web para seguir el recorrido de las estibas a través de las etapas de
+            embotellado y vestido, con alertas de vencimiento y gestión de solicitudes de
+            vencimiento excepcional (VE). Conectada en vivo a Google Sheets y con generación
+            de reportes en PDF.
+          </p>
+          <div class="stack">
+            <span class="chip">JavaScript</span>
+            <span class="chip">SheetJS</span>
+            <span class="chip">Chart.js</span>
+            <span class="chip">jsPDF</span>
+            <span class="chip">Google Sheets API</span>
+            <span class="chip">Cloudflare</span>
+          </div>
+          <a class="card-link" href="https://estibas.besa-junin.workers.dev/" target="_blank" rel="noopener">Ver proyecto ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-inner">
+        <div class="card-shot">
+          <img src="capturas/erp-inventario.png" alt="Captura de Planificación de Insumos - Inventario"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+            Captura pendiente<br>capturas/erp-inventario.png
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag"><span class="d"></span> En producción</div>
+          <h3>BodegaERP · Control de Inventario</h3>
+          <p class="card-sub">Módulo de planificación de insumos</p>
+          <p class="desc">
+            Módulo del ERP de producción enfocado en trazabilidad e inventario de insumos:
+            estado de stock por semáforo (verde / amarillo / rojo), detección automática de
+            faltantes y control de acceso por roles.
+          </p>
+          <div class="stack">
+            <span class="chip">Next.js 14</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">FastAPI</span>
+            <span class="chip">PostgreSQL</span>
+            <span class="chip">Tailwind CSS</span>
+            <span class="chip">Cloudflare</span>
+          </div>
+          <a class="card-link" href="https://erp-bodega.besa-junin.workers.dev/" target="_blank" rel="noopener">Ver proyecto ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-inner">
+        <div class="card-shot">
+          <img src="capturas/erp-compras.png" alt="Captura de Planificación de Insumos - Compras"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+            Captura pendiente<br>capturas/erp-compras.png
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag"><span class="d"></span> En producción</div>
+          <h3>BodegaERP · Control de Compras</h3>
+          <p class="card-sub">Módulo de planificación de insumos</p>
+          <p class="desc">
+            Segundo módulo del mismo ERP, enfocado en la gestión de compras de insumos:
+            seguimiento de pedidos a proveedores y su cruce contra la planificación de
+            producción, sobre la misma base de datos que el módulo de inventario.
+          </p>
+          <div class="stack">
+            <span class="chip">Next.js 14</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">FastAPI</span>
+            <span class="chip">PostgreSQL</span>
+            <span class="chip">Tailwind CSS</span>
+            <span class="chip">Cloudflare</span>
+          </div>
+          <a class="card-link" href="https://erp-bodega3.besa-junin.workers.dev/" target="_blank" rel="noopener">Ver proyecto ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-inner">
+        <div class="card-shot">
+          <img src="capturas/formularios.png" alt="Captura de ERP Formularios de Línea"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="shot-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+            Captura pendiente<br>capturas/formularios.png
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag"><span class="d"></span> En producción</div>
+          <h3>ERP Formularios de Línea</h3>
+          <p class="card-sub">Digitalización de registros operativos</p>
+          <p class="desc">
+            Plataforma para digitalizar los registros en papel de calidad, mantenimiento,
+            higiene e insumos de la línea de producción: formularios dinámicos, flujo de
+            aprobaciones, carga de evidencias y exportación a Excel y PDF, con gestión de
+            usuarios por rol.
+          </p>
+          <div class="stack">
+            <span class="chip">Formularios dinámicos</span>
+            <span class="chip">Control de roles</span>
+            <span class="chip">Export Excel/PDF</span>
+            <span class="chip">Cloudflare</span>
+          </div>
+          <a class="card-link" href="https://plantillasv02.besa-junin.workers.dev/" target="_blank" rel="noopener">Ver proyecto ↗</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="stack">
+  <div class="sec-head reveal"><span class="sec-num">02</span><h2>Stack y forma de trabajo</h2></div>
+  <p class="sec-lede reveal">Las herramientas que uso todos los días, de la base de datos a la interfaz.</p>
+  <div class="skill-grid">
+    <div class="skill-group reveal">
+      <h4>Frontend</h4>
+      <ul>
+        <li><b>Next.js 14</b> (App Router)</li>
+        <li><b>TypeScript</b> · React</li>
+        <li><b>Tailwind CSS</b></li>
+        <li>Chart.js</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <h4>Backend &amp; Datos</h4>
+      <ul>
+        <li><b>FastAPI</b> · Python</li>
+        <li><b>PostgreSQL</b> · MySQL</li>
+        <li>SQL (Joins, CTEs, Window Functions)</li>
+        <li>Diseño relacional</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <h4>Analítica &amp; BI</h4>
+      <ul>
+        <li><b>Power BI</b> (modelo estrella, DAX)</li>
+        <li>Python: Pandas, NumPy</li>
+        <li>Excel avanzado, Power Query</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <h4>Infraestructura</h4>
+      <ul>
+        <li><b>Cloudflare Workers</b></li>
+        <li>Docker Compose</li>
+        <li>Git / GitHub</li>
+        <li>Google Sheets API</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="sobre-mi">
+  <div class="sec-head reveal"><span class="sec-num">03</span><h2>Sobre mí</h2></div>
+  <div class="about-wrap">
+    <div class="about-text reveal">
+      <p>
+        Soy <strong>Analista en Sistemas de Información</strong> (Universidad Champagnat) y trabajo
+        en <strong>Bodegas Esmeralda</strong>, donde veo de cerca los procesos operativos que
+        después digitalizo. Esa cercanía con el problema real —no un enunciado abstracto—
+        es la base de cada uno de estos proyectos.
+      </p>
+      <p>
+        Desarrollo con <strong>herramientas de IA como parte diaria del flujo de trabajo</strong>,
+        pero el criterio de qué se integra, cómo se estructura la base de datos y qué código
+        pasa a producción es mío: reviso, ajusto y pruebo antes de cada despliegue.
+      </p>
+      <p>
+        Fuera del código, tengo formación en <strong>electrónica</strong> (Técnico Electrónico)
+        y experiencia gestionando pedidos y bases de datos de clientes en roles administrativos
+        y freelance, lo que me da una lectura práctica tanto del lado técnico como del operativo.
+      </p>
+    </div>
+    <div class="about-side reveal">
+      <div class="row"><span>Base</span><b>San Martín, Mendoza</b></div>
+      <div class="row"><span>Rol</span><b>Analista / Dev Jr.</b></div>
+      <div class="row"><span>Modalidad</span><b>Remoto / Híbrido</b></div>
+      <div class="row"><span>Facturación</span><b>Monotributista</b></div>
+      <div class="row"><span>Inglés</span><b>B1 (progreso)</b></div>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div>
+      <h3>Hablemos<span class="grad">.</span></h3>
+      <p>Disponible para roles de desarrollo, análisis de datos o sistemas.</p>
+      <p>Monotributista, listo para facturar.</p>
+    </div>
+    <div class="foot-links">
+      <a href="mailto:torressosa56@gmail.com">torressosa56@gmail.com ↗</a>
+      <a href="tel:+542634180788">+54 263 418 0788</a>
+      <a href="https://www.linkedin.com/in/lucas-sosa-27822b212/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/lucs56" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">San Martín, Mendoza, Argentina — Portfolio actualizado 2026</div>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
